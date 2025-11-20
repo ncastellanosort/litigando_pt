@@ -29,10 +29,19 @@ public class LogicController {
     }
   }
 
-  @PostMapping("/objective-sum")
-  public ResponseEntity<?> objectiveSum(@RequestBody ObjectiveSumRequest request) {
+  @PostMapping("/objective-sum-optimized")
+  public ResponseEntity<?> objectiveSumOptimized(@RequestBody ObjectiveSumRequest request) {
     try {
-      return ResponseEntity.ok(Exercises.objectiveSum(request.getNumbers(), request.getTarget()));
+      return ResponseEntity.ok(Exercises.objectiveSumOptimized(request.getNumbers(), request.getTarget()));
+    } catch (Exception e) {
+      return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
+    }
+  }
+
+  @PostMapping("/objective-sum-brute")
+  public ResponseEntity<?> objectiveSumBrute(@RequestBody ObjectiveSumRequest request) {
+    try {
+      return ResponseEntity.ok(Exercises.objectiveSumBrute(request.getNumbers(), request.getTarget()));
     } catch (Exception e) {
       return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
     }

@@ -20,20 +20,33 @@ public class Exercises {
     return frequencyMap;
   }
 
-  public static ObjectiveSumResponse objectiveSum(int[] numbers, int target) {
-    Map<Integer, Integer> map = new HashMap<>();
+  public static ObjectiveSumResponse objectiveSumOptimized(int[] numbers, int target) {
+    Map<Integer, Integer> map = new HashMap<>(); 
 
     for (int i = 0; i < numbers.length; i++) {
-        int complement = target - numbers[i];
+      int num = numbers[i];
+      int complement = target - num;
 
-        if (map.containsKey(complement)) {
-            return new ObjectiveSumResponse(map.get(complement), i);
-        }
+      if (map.containsKey(complement)) {
+        return new ObjectiveSumResponse(map.get(complement), i);
+      }
 
-        map.put(numbers[i], i);
+      map.put(num, i);
     }
 
-    return null; 
+    return null;
+  }
+
+  public static ObjectiveSumResponse objectiveSumBrute(int[] numbers, int target) {
+    for (int i = 0; i < numbers.length; i++) {
+      for (int j = i + 1; j < numbers.length; j++) {
+          if (numbers[i] + numbers[j] == target) {
+              return new ObjectiveSumResponse(i, j);
+          }
+      }
+    }
+
+    return null;
   }
 
   public static ParenthesesValidatorResponse parenthesesValidator(String text) {
@@ -45,13 +58,13 @@ public class Exercises {
       );
 
       for (char c : text.toCharArray()) {
-          if (pairs.containsValue(c)) {
-              stack.push(c);
-          } else if (pairs.containsKey(c)) {
-              if (stack.isEmpty() || stack.pop() != pairs.get(c)) {
-                  return new ParenthesesValidatorResponse(false);
-              }
+        if (pairs.containsValue(c)) {
+          stack.push(c);
+        } else if (pairs.containsKey(c)) {
+          if (stack.isEmpty() || stack.pop() != pairs.get(c)) {
+              return new ParenthesesValidatorResponse(false);
           }
+        }
       }
 
       return new ParenthesesValidatorResponse(stack.isEmpty());
