@@ -13,7 +13,7 @@ import com.example.litigando.logic.Exercises;
 import com.example.litigando.logic.dto.FrequencyRequest;
 import com.example.litigando.logic.dto.FrequencyResponse;
 import com.example.litigando.logic.dto.ObjectiveSumRequest;
-import com.example.litigando.logic.dto.ObjectiveSumResponse;
+import com.example.litigando.logic.dto.ParenthesesValidatorRequest;
 
 @RestController
 @RequestMapping("logic")
@@ -40,7 +40,11 @@ public class LogicController {
   }
 
   @GetMapping("validator")
-  public String Validator() {
-    return "Validar parentesis";
+  public ResponseEntity<?> Validator(@RequestBody ParenthesesValidatorRequest request) {
+    try {
+      return ResponseEntity.ok(Exercises.parenthesesValidator(request.getText()));
+    } catch (Exception e) {
+      return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
+    }
   }
 }

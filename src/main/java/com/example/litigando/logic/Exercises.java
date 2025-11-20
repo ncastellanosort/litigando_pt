@@ -2,8 +2,10 @@ package com.example.litigando.logic;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Stack;
 
 import com.example.litigando.logic.dto.ObjectiveSumResponse;
+import com.example.litigando.logic.dto.ParenthesesValidatorResponse;
 
 public class Exercises {
   public static Map<Integer, Integer> FrequencyNumbers(int[] numbers) {
@@ -34,6 +36,24 @@ public class Exercises {
     return null; 
   }
 
-  public static void ParenthesesValidator(String text) {
+  public static ParenthesesValidatorResponse parenthesesValidator(String text) {
+      Stack<Character> stack = new Stack<>();
+      Map<Character, Character> pairs = Map.of(
+              ')', '(',
+              '}', '{',
+              ']', '['
+      );
+
+      for (char c : text.toCharArray()) {
+          if (pairs.containsValue(c)) {
+              stack.push(c);
+          } else if (pairs.containsKey(c)) {
+              if (stack.isEmpty() || stack.pop() != pairs.get(c)) {
+                  return new ParenthesesValidatorResponse(false);
+              }
+          }
+      }
+
+      return new ParenthesesValidatorResponse(stack.isEmpty());
   }
 }
