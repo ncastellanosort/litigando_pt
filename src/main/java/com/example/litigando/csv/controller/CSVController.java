@@ -7,12 +7,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.litigando.csv.dto.CSVRequest;
+import com.example.litigando.csv.service.CSVService;
 
 @RestController
 @RequestMapping("/csv")
 public class CSVController {
   @PostMapping
   public ResponseEntity<?> CSV(@RequestBody CSVRequest request) {
-      return ResponseEntity.ok(new String("CSV"));
+      return ResponseEntity.ok(CSVService.ReadCSV(request));
   }
 }
