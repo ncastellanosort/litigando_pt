@@ -52,9 +52,9 @@ public class Exercises {
   public static ParenthesesValidatorResponse parenthesesValidator(String text) {
       Stack<Character> stack = new Stack<>();
       Map<Character, Character> pairs = Map.of(
-              ')', '(',
-              '}', '{',
-              ']', '['
+        ')', '(',
+        '}', '{',
+        ']', '['
       );
 
       for (char c : text.toCharArray()) {
@@ -62,7 +62,7 @@ public class Exercises {
           stack.push(c);
         } else if (pairs.containsKey(c)) {
           if (stack.isEmpty() || stack.pop() != pairs.get(c)) {
-              return new ParenthesesValidatorResponse(false);
+            return new ParenthesesValidatorResponse(false);
           }
         }
       }
