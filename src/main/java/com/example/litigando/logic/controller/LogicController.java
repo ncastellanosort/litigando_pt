@@ -3,7 +3,6 @@ package com.example.litigando.logic.controller;
 import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,7 +38,7 @@ public class LogicController {
     }
   }
 
-  @GetMapping("validator")
+  @PostMapping("/validator")
   public ResponseEntity<?> Validator(@RequestBody ParenthesesValidatorRequest request) {
     try {
       return ResponseEntity.ok(Exercises.parenthesesValidator(request.getText()));
