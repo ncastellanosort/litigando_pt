@@ -10,7 +10,7 @@ import com.example.litigando.csv.dto.CSVRequest;
 
 @RestController
 @RequestMapping("/csv")
-public class CsvController {
+public class CSVController {
   @PostMapping
   public ResponseEntity<?> CSV(@RequestBody CSVRequest request) {
       return ResponseEntity.ok(new String("CSV"));
