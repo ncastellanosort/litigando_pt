@@ -18,6 +18,9 @@ docker run -d --name oracle23free -p 1521:1521 -p 5500:5500 -e ORACLE_PWD=oracle
 mvn clean install
 mvn spring-boot:run
 ```
+## Libreria Open CSV
+Se uso esta libreria ya que nos ofrece funciones ya establecidas para la lectura del CSV, como lo seria CSVReader, o el manejo de excepciones para el tema de los CSVs.
+
 ## Punto C
 ### Frecuencia de numeros
 Complejidad temporal: O(n), ya que recorre el array solo 1 vez para guardar las frecuencias, con el metodo del
