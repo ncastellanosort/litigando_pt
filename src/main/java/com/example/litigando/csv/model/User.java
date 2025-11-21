@@ -1,5 +1,6 @@
 package com.example.litigando.csv.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -11,19 +12,28 @@ import jakarta.persistence.Table;
 public class User {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  public Long id;
+  private Long id;
 
-  public String name;
-  public String email;
-  public String role;
-  public String fechaCreacion;
+  @Column(name="NOMBRE", nullable=false)
+  private String name;
 
-  public User(Long id, String name, String email, String role, String fechaCreacion) {
+  @Column(name="EMAIL", nullable=false)
+  private String email;
+
+  @Column(name="ROLE_ID", nullable=false)
+  private Long role_id;
+
+  @Column(name="FECHA_CREACION")
+  private String fecha_creacion;
+
+  public User() {};
+
+  public User(Long id, String name, String email, Long role_id, String fecha_creacion) {
     this.id = id;
     this.name = name;
     this.email = email;
-    this.role = role;
-    this.fechaCreacion = fechaCreacion;
+    this.role_id = role_id;
+    this.fecha_creacion = fecha_creacion;
   }
 
   public Long getId() {
@@ -50,19 +60,19 @@ public class User {
 	this.email = email;
   }
 
-  public String getRole() {
-	return role;
+  public Long getRole_id() {
+	return role_id;
   }
 
-  public void setRole(String role) {
-	this.role = role;
+  public void setRole_id(Long role_id) {
+	this.role_id = role_id;
   }
 
-  public String getFechaCreacion() {
-	return fechaCreacion;
+  public String getFecha_creacion() {
+	return fecha_creacion;
   }
 
-  public void setFechaCreacion(String fechaCreacion) {
-	this.fechaCreacion = fechaCreacion;
+  public void setFecha_creacion(String fecha_creacion) {
+	this.fecha_creacion = fecha_creacion;
   }
 }
