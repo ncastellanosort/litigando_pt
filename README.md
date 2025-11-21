@@ -8,7 +8,7 @@
 git clone https://github.com/ncastellanosort/litigando_pt.git
 cd litigando_pt
 ```
-2. Conectarse a la base de datos y ejecutar el script.sql, para crear las tablas.
+2. Conectarse a la base de datos y ejecutar el script.sql para crear las tablas.
 Crear un .env con los valores para la conexion de la base de datos.
 ```
 docker run -d --name oracle23free -p 1521:1521 -p 5500:5500 -e ORACLE_PWD=oracle123 container-registry.oracle.com/database/free:latest
@@ -18,6 +18,21 @@ docker run -d --name oracle23free -p 1521:1521 -p 5500:5500 -e ORACLE_PWD=oracle
 mvn clean install
 mvn spring-boot:run
 ```
+## Punto C
+### Frecuencia de numeros
+Complejidad temporal: O(n), ya que recorre el array solo 1 vez para guardar las frecuencias, con el metodo del
+getOrDefault, podemos realizar 1 solo recorrido sumando de a 1 si se encuentra el numero.
+### Suma objetivo
+1. Forma no optimizada:
+* Complejidad temporal: O(n^2), ya que estamos realizando 2 bucles anidados, funciona, pero en arrays mas grandes se demorara muchisimo mas.
+2. Forma optimizada:
+* Complejidad temporal: O(n), ya que recorremos el array solo 1 vez.
+### Validacion de parentesis
+Estructuras de datos usadas: 
+1. Stack (LIFO): para almacenar los parentesis abiertos mientras se recorre el texto, si encontramos por ejemplo un (, lo agregamos al stack,
+luego si encontramos un ), sacamos el ( para comprobar si coincide.
+2. Map: Es donde guardamos los parentesis, de cierre a apertura, ya que al encontrar un cierre como se comento anteriormente ), podemos saber cual 
+es su apertura (.
 
 ## Punto D
 ### 1. ¿Qué cambios harías en tu solución si el archivo CSV pasara de 1.000 a 10 millones de registros?
