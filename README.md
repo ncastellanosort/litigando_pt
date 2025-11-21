@@ -1,10 +1,22 @@
 # Litigando prueba tecnica
-## Stack:
+## Stack
 * Spring Boot
 
-## Database:
+## Ejecutar el proyecto
+1. Clonar el repositorio
+```
+git clone https://github.com/ncastellanosort/litigando_pt.git
+cd litigando_pt
+```
+2. Conectarse a la base de datos y ejecutar el script.sql, para crear las tablas.
+Crear un .env con los valores para la conexion de la base de datos.
 ```
 docker run -d --name oracle23free -p 1521:1521 -p 5500:5500 -e ORACLE_PWD=oracle123 container-registry.oracle.com/database/free:latest
+```
+3. Construir y ejecutar la aplicacion.
+```
+mvn clean install
+mvn spring-boot:run
 ```
 
 ## Punto D
