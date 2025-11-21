@@ -2,6 +2,7 @@ package com.example.litigando.csv.utils;
 
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -9,6 +10,7 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.example.litigando.csv.dto.CSVRequest;
 import com.example.litigando.csv.model.Role;
 import com.example.litigando.csv.model.UserDTO;
 import com.example.litigando.csv.service.RoleService;
@@ -28,12 +30,15 @@ public class CSV {
     this.userService = userService;
   }
 
-  public void processCSV(String path) {
+  public void processCSV(CSVRequest request) {
     List<Role> roles = roleService.findAll();
     Map<String, Long> roleMap = roles.stream()
                       .collect(Collectors.toMap(r -> r.getNombre().toUpperCase(), Role::getId));
 
-      try (CSVReader reader = new CSVReader(new FileReader(path))) {
+    List<UserDTO> batch = new ArrayList<>();
+    int batchSize = request.getbatchSize();
+
+      try (CSVReader reader = new CSVReader(new FileReader(request.getPath()))) {
         List<String[]> allData = reader.readAll(); 
         for (int i = 1; i < allData.size(); ++i) {
           String[] row = allData.get(i);
@@ -59,12 +64,14 @@ public class CSV {
             continue;
           }
 
-           try {
-             logger.info("processing user: name={}, email={}, roleId={}, date={}", name, email, roleId, date);
-             userService.save(new UserDTO(name, email, roleId, date));
-          } catch (Exception e) {
-             logger.error("error saving user in db on row {}: {}", i, e.getMessage(), e);
-          }  
+          batch.add(new UserDTO(name, email, roleId, date));
+          logger.info("added user to batch: name={}, email={}, roleId={}, date={}", name, email, roleId, date);
+
+          if (batch.size() >= batchSize) {
+            userService.saveAll(batch);
+            batch.clear();
+          }
+
         }
       } catch (IOException | CsvException e) {
           e.printStackTrace();
