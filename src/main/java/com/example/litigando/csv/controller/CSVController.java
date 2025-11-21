@@ -1,18 +1,17 @@
 package com.example.litigando.csv.controller;
 
-import org.springframework.web.bind.annotation.GetMapping;
+import java.util.Map;
+
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
 import com.example.litigando.csv.dto.CSVRequest;
-import com.example.litigando.csv.dto.CSVResponse;
 import com.example.litigando.csv.service.RoleService;
 import com.example.litigando.csv.service.UserService;
 import com.example.litigando.csv.utils.CSV;
-import com.example.litigando.csv.model.Role;
 
 @RestController
 @RequestMapping("/csv")
@@ -28,13 +27,18 @@ public class CSVController {
   } 
 
   @PostMapping
-  public boolean CSV(@RequestBody CSVRequest request) {
-    csv.processCSV(request.getPath());
-    return true;
-  }
-
-  @GetMapping
-  public List<Role> getRoles() {
-    return this.roleService.findAll();
+  public ResponseEntity<?> CSV(@RequestBody CSVRequest request) {
+    try {
+        int processed = csv.processCSV(request);
+        return ResponseEntity.ok(Map.of(
+            "message", "CSV processed successfully",
+            "records_processed", processed
+        ));
+    } catch (Exception e) {
+        return ResponseEntity.badRequest().body(Map.of(
+            "message", "failed to process CSV",
+            "error", e.getMessage()
+        ));
+    }
   }
 }

@@ -9,6 +9,8 @@ import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.example.litigando.csv.dto.CSVRequest;
 import com.example.litigando.csv.model.Role;
@@ -30,13 +32,14 @@ public class CSV {
     this.userService = userService;
   }
 
-  public void processCSV(CSVRequest request) {
+  public int processCSV(CSVRequest request) {
     List<Role> roles = roleService.findAll();
     Map<String, Long> roleMap = roles.stream()
                       .collect(Collectors.toMap(r -> r.getNombre().toUpperCase(), Role::getId));
 
     List<UserDTO> batch = new ArrayList<>();
     int batchSize = request.getbatchSize();
+    int processedCount = 0;
 
       try (CSVReader reader = new CSVReader(new FileReader(request.getPath()))) {
         List<String[]> allData = reader.readAll(); 
@@ -65,16 +68,28 @@ public class CSV {
           }
 
           batch.add(new UserDTO(name, email, roleId, date));
+          processedCount++;
+
           logger.info("added user to batch: name={}, email={}, roleId={}, date={}", name, email, roleId, date);
 
           if (batch.size() >= batchSize) {
             userService.saveAll(batch);
             batch.clear();
           }
-
         }
-      } catch (IOException | CsvException e) {
-          e.printStackTrace();
-    }
+
+        if (!batch.isEmpty()) {
+          userService.saveAll(batch);
+        }
+
+        return processedCount;
+      } catch (IOException e) {
+          logger.error("error reading CSV: {}", e.getMessage(), e);
+           throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "cannot read CSV file: " + e.getMessage());
+      } catch (CsvException e) {
+          logger.error("invalid CSV: {}", e.getMessage(), e);
+           throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "invalid CSV: " + e.getMessage());
+      }
+
   }
 }
