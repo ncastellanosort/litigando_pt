@@ -34,4 +34,19 @@ public class UserServiceImpl implements UserService {
     );
     return repo.save(user);
   }
+
+  @Override
+    public List<User> saveAll(List<UserDTO> dtos) {
+      List<User> users = dtos.stream()
+        .map(dto -> new User(
+            null,
+            dto.getName(),
+            dto.getEmail(),
+            dto.getRole_id(),
+            dto.getFecha_creacion()
+        ))
+        .toList();
+
+       return repo.saveAll(users);
+   }
 }

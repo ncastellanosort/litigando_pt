@@ -7,6 +7,7 @@ import com.example.litigando.csv.model.User;
 
 public interface UserService {
   List<User> findAll();
+  List<User> saveAll(List<UserDTO> dto);
   User save(UserDTO dto);
   // numero de usuarios por rol, de mayor a menor
   // usuarios que no tienen rol asignado
